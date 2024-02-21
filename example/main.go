@@ -46,16 +46,16 @@ func main() {
 		},
 	}
 
-	validatorBuilder := validation.NewStructValidationBuilder(&request)
-	validatorBuilder.AddRequiredFieldRules(
+	validationBuilder := validation.NewStructValidationBuilder(&request)
+	validationBuilder.AddRequiredFieldRules(
 		validation.Field(&request.Type, validation.Required, validation.In(1, 2, 3)),
 	)
 
-	validatorBuilder.AddFieldRules(
+	validationBuilder.AddFieldRules(
 		validation.Field(&request.Attr1, validation.Required),
 	)
 
-	validatorBuilder.AddFieldRules(
+	validationBuilder.AddFieldRules(
 		validation.StructField[FieldOne](&request.FieldOne, func(value FieldOne) error {
 			return validation.ValidateStruct(&value,
 				validation.Field(&value.FieldThree, validation.Required),
@@ -74,7 +74,7 @@ func main() {
 		}),
 	)
 
-	err := validatorBuilder.Validate()
+	err := validationBuilder.Validate()
 	if err != nil {
 		fmt.Println(err)
 	}
